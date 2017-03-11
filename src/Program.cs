@@ -83,9 +83,9 @@ namespace DocumentDB.GetStarted
             // Create a new instance of the DocumentClient
             this.client = new DocumentClient(new Uri(EndpointUrl), AuthorizationKey);
 
-            await this.CreateDatabaseIfNotExists("FamilyDB");
-
-            await this.CreateDocumentCollectionIfNotExists("FamilyDB", "FamilyCollection");
+            await this.client.CreateDatabaseIfNotExistsAsync(new Database { Id = "FamilyDB_oa" });
+            
+            await this.client.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri("FamilyDB_oa"), new DocumentCollection { Id = "FamilyCollection_oa" });
 
             // Insert a document, here we create a Family object
             Family andersenFamily = new Family
