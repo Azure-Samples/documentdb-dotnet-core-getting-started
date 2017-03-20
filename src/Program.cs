@@ -117,6 +117,12 @@ namespace DocumentDB.GetStarted
 
             await this.CreateFamilyDocumentIfNotExists("FamilyDB", "FamilyCollection", andersenFamily);
 
+            Family andersonFamilyDocument = await this.client.ReadDocumentAsync<Family>(UriFactory.CreateDocumentUri("FamilyDB", "FamilyCollection", andersenFamily.Id));
+
+            Console.WriteLine("\nRead family {0}", andersonFamilyDocument.Id);
+
+            this.WriteToConsoleAndPromptToContinue("{0}", andersonFamilyDocument);
+
             Family wakefieldFamily = new Family
             {
                 Id = "Wakefield.7",
@@ -155,6 +161,12 @@ namespace DocumentDB.GetStarted
 
             await this.CreateFamilyDocumentIfNotExists("FamilyDB", "FamilyCollection", wakefieldFamily);
 
+            Family wakefieldFamilyDocument = await this.client.ReadDocumentAsync<Family>(UriFactory.CreateDocumentUri("FamilyDB", "FamilyCollection", wakefieldFamily.Id));
+
+            Console.WriteLine("\nRead family {0}", wakefieldFamilyDocument.Id);
+
+            this.WriteToConsoleAndPromptToContinue("{0}", wakefieldFamilyDocument);
+
             this.ExecuteSimpleQuery("FamilyDB", "FamilyCollection");
 
             // Clean up/delete the database and client
@@ -179,7 +191,7 @@ namespace DocumentDB.GetStarted
                 if (de.StatusCode == HttpStatusCode.NotFound)
                 {
                     await this.client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(databaseName, collectionName), family);
-                    this.WriteToConsoleAndPromptToContinue("Created Family {0}", family.Id);
+                    this.WriteToConsoleAndPromptToContinue("\nCreated Family {0}", family.Id);
                 }
                 else
                 {
@@ -205,23 +217,26 @@ namespace DocumentDB.GetStarted
                 .Where(f => f.LastName == "Andersen");
 
             // The query is executed synchronously here, but can also be executed asynchronously via the IDocumentQuery<T> interface
-            Console.WriteLine("Running LINQ query...");
+            Console.WriteLine("\nRunning LINQ query...");
             foreach (Family family in familyQuery)
             {
-                Console.WriteLine("\tRead {0}", family);
+                Console.WriteLine("\nRead {0}", family);
             }
 
             // Now execute the same query via direct SQL
             IQueryable<Family> familyQueryInSql = this.client.CreateDocumentQuery<Family>(
                 UriFactory.CreateDocumentCollectionUri(databaseName, collectionName),
-                "SELECT * FROM Family WHERE Family.lastName = 'Andersen'",
+                "SELECT * FROM Family WHERE Family.LastName = 'Andersen'",
                 queryOptions);
 
-            Console.WriteLine("Running direct SQL query...");
-            foreach (Family family in familyQuery)
+            Console.WriteLine("\nRunning direct SQL query...");
+            foreach (Family family in familyQueryInSql)
             {
-                Console.WriteLine("\tRead {0}", family);
+                Console.WriteLine("\nRead {0}", family);
             }
+
+            Console.WriteLine("Press any key to continue ...");
+            Console.ReadKey();
         }
 
         /// <summary>
