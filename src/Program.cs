@@ -23,7 +23,7 @@ namespace DocumentDB.GetStarted
     using Newtonsoft.Json;
 
     /// <summary>
-    /// This get-started sample demonstrates the creation of resources and execution of simple queries.  
+    /// This GetStarted sample demonstrates the creation of resources and execution of simple queries.  
     /// </summary>
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "For illustration purposes.")]
     public class Program
@@ -31,12 +31,12 @@ namespace DocumentDB.GetStarted
         /// <summary>
         /// The Azure DocumentDB endpoint for running this GetStarted sample.
         /// </summary>
-        private static readonly string EndpointUrl = "https://localhost:8081";
+        private const string EndpointUrl = "https://localhost:8081";
 
         /// <summary>
-        /// The authorization key for the Azure DocumentDB account.
+        /// The primary key for the Azure DocumentDB account.
         /// </summary>
-        private static readonly string AuthorizationKey = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
+        private const string PrimaryKey = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
 
         /// <summary>
         /// The DocumentDB client instance.
@@ -81,11 +81,11 @@ namespace DocumentDB.GetStarted
         private async Task GetStartedDemo()
         {
             // Create a new instance of the DocumentClient
-            this.client = new DocumentClient(new Uri(EndpointUrl), AuthorizationKey);
+            this.client = new DocumentClient(new Uri(EndpointUrl), PrimaryKey);
 
-            await this.CreateDatabaseIfNotExists("FamilyDB");
+            await this.client.CreateDatabaseIfNotExistsAsync(new Database { Id = "FamilyDB" });
 
-            await this.CreateDocumentCollectionIfNotExists("FamilyDB", "FamilyCollection");
+            await this.client.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri("FamilyDB"), new DocumentCollection { Id = "FamilyCollection" });
 
             // Insert a document, here we create a Family object
             Family andersenFamily = new Family
@@ -159,77 +159,6 @@ namespace DocumentDB.GetStarted
 
             // Clean up/delete the database and client
             await this.client.DeleteDatabaseAsync(UriFactory.CreateDatabaseUri("FamilyDB"));
-        }
-
-        /// <summary>
-        /// Create a database with the specified name if it doesn't exist. 
-        /// </summary>
-        /// <param name="databaseName">The name/ID of the database.</param>
-        /// <returns>The Task for asynchronous execution.</returns>
-        private async Task CreateDatabaseIfNotExists(string databaseName)
-        {
-            // Check to verify a database with the id=FamilyDB does not exist
-            try
-            {
-                await this.client.ReadDatabaseAsync(UriFactory.CreateDatabaseUri(databaseName));
-            }
-            catch (DocumentClientException de)
-            {
-                // If the database does not exist, create a new database
-                if (de.StatusCode == HttpStatusCode.NotFound)
-                {
-                    await this.client.CreateDatabaseAsync(new Database { Id = databaseName });
-                    this.WriteToConsoleAndPromptToContinue("Created {0}", databaseName);
-                }
-                else
-                {
-                    throw;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Create a collection with the specified name if it doesn't exist.
-        /// </summary>
-        /// <param name="databaseName">The name/ID of the database.</param>
-        /// <param name="collectionName">The name/ID of the collection.</param>
-        /// <returns>The Task for asynchronous execution.</returns>
-        private async Task CreateDocumentCollectionIfNotExists(string databaseName, string collectionName)
-        {
-            try
-            {
-                await this.client.ReadDocumentCollectionAsync(UriFactory.CreateDocumentCollectionUri(databaseName, collectionName));
-            }
-            catch (DocumentClientException de)
-            {
-                // If the document collection does not exist, create a new collection
-                if (de.StatusCode == HttpStatusCode.NotFound)
-                {
-                    DocumentCollection collectionInfo = new DocumentCollection();
-                    collectionInfo.Id = collectionName;
-
-                    // Optionally, you can configure the indexing policy of a collection. Here we configure collections for maximum query flexibility 
-                    // including string range queries. 
-                    collectionInfo.IndexingPolicy = new IndexingPolicy(new RangeIndex(DataType.String) { Precision = -1 });
-
-                    // Optionally, you can configure the partitioning scheme of a collection. Here we configure it to the US District property since we 
-                    // are recording census data for families. You can omit this for collections with low storage  (under 10 GB) and throughput requirements
-                    collectionInfo.PartitionKey.Paths.Add("/District");
-
-                    // DocumentDB collections can be reserved with throughput specified in request units/second. 1 RU is a normalized request equivalent to the read
-                    // of a 1KB document.  Here we create a collection with 400 RU/s. 
-                    await this.client.CreateDocumentCollectionAsync(
-                        UriFactory.CreateDatabaseUri(databaseName),
-                        new DocumentCollection { Id = collectionName },
-                        new RequestOptions { OfferThroughput = 400 });
-
-                    this.WriteToConsoleAndPromptToContinue("Created {0}", collectionName);
-                }
-                else
-                {
-                    throw;
-                }
-            }
         }
 
         /// <summary>
