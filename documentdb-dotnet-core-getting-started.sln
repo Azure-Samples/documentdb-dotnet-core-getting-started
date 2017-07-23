@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1DEBFD5B-697F-4976-9E06-815E0D892DC0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_solution", "_solution", "{E76C9B85-5FF2-4E84-8069-3E80EE9B90BA}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		CONTRIBUTING.md = CONTRIBUTING.md
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "documentdb-dotnet-core-getting-started", "src\documentdb-dotnet-core-getting-started.csproj", "{6F0D6E8B-7650-485B-A0AF-404D1813FA7A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6F0D6E8B-7650-485B-A0AF-404D1813FA7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F0D6E8B-7650-485B-A0AF-404D1813FA7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F0D6E8B-7650-485B-A0AF-404D1813FA7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F0D6E8B-7650-485B-A0AF-404D1813FA7A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6F0D6E8B-7650-485B-A0AF-404D1813FA7A} = {1DEBFD5B-697F-4976-9E06-815E0D892DC0}
+	EndGlobalSection
+EndGlobal
