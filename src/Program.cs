@@ -31,12 +31,12 @@ namespace DocumentDB.GetStarted
         /// <summary>
         /// The Azure DocumentDB endpoint for running this GetStarted sample.
         /// </summary>
-        private const string EndpointUrl = "https://localhost:8081";
+        private const string EndpointUrl = Environment.GetEnvironmentVariable("EndpointUrl");
 
         /// <summary>
         /// The primary key for the Azure DocumentDB account.
         /// </summary>
-        private const string PrimaryKey = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
+        private const string PrimaryKey = Environment.GetEnvironmentVariable("PrimaryKey");
 
         /// <summary>
         /// The DocumentDB client instance.
