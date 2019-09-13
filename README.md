@@ -1,7 +1,11 @@
 ---
-services: documentdb
-platforms: dotnet
-author: arramac
+page_type: sample
+languages:
+- csharp
+products:
+- azure
+description: "This sample shows you how to use the Microsoft Azure DocumentDB service to store and access data from a .NET Core console application."
+urlFragment: documentdb-dotnet-core-getting-started
 ---
 
 # Developing a .NET Core console app using DocumentDB
